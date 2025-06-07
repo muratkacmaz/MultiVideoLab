@@ -1,0 +1,95 @@
+{
+    "archive": {
+       "enable_reconstruct": true,
+       "files": {
+          "input.png": "input",
+          "scribbles.png": "scribbles",
+          "output.png": "output"
+       }
+    },
+    "general": {
+       "demo_title": "A Closed Form Solution to Natural Image Matting",
+       "requirements": "docker",
+       "xlink_article": "https://www.ipol.im/pub/pre/532/",
+       "description": "This demo is the implementation of Image Matting using Closed Form Solution. <br>You need to upload the input image and the image with scribbles or you can use the examples provided below.<br>[1] A. Levin, D. Lischinski, and Y. Weiss, \"A Closed Form Solution to Natural Image Matting,\" IEEE Conf. on Computer Vision and Pattern Recognition (CVPR), June 2006, New York."
+    },
+    "build": {
+       "url": "https://github.com/aissa-abdelaziz/Image-Matting.git",
+       "rev": "origin/main",
+       "dockerfile": ".ipol/Dockerfile"
+    },
+    "inputs": [
+       {
+          "description": "Input Image",
+          "dtype": "3x8i",
+          "ext": ".png",
+          "max_pixels": "2048*2048",
+          "max_weight": "10*1024*1024",
+          "type": "image"
+       },
+       {
+          "description": "Scribbles",
+          "dtype": "3x8i",
+          "ext": ".png",
+          "max_pixels": "2048*2048",
+          "max_weight": "10*1024*1024",
+          "required": true,
+          "type": "image"
+       }
+    ],
+    "params": [
+       {
+          "id": "radius",
+          "type": "selection_radio",
+          "label": "Window Size",
+          "comments": "",
+          "values": {
+             "3x3": 1,
+             "5x5": 2,
+             "7x7": 3,
+             "9x9": 4
+          },
+          "default_value": 1
+       },
+       {
+          "id": "epsilon",
+          "type": "selection_radio",
+          "label": "Espilon value",
+          "comments": "Provides numerical stability",
+          "values": {
+             "1e-5": 0.00001,
+             "1e-4": 0.0001,
+             "1e-3": 0.001,
+             "1e-2": 0.01
+          },
+          "default_value": 0.00001
+       }
+    ],
+    "results": [
+       {
+          "contents": {
+             "Input Image": {
+                "img": "input_0.png"
+             },
+             "Scribbles": {
+                "img": "input_1.png"
+             },
+             "Output Matting": {
+                "img": "output.png"
+             }
+          },
+          "label": "<h2>Images</h2>",
+          "type": "gallery"
+       },
+       {
+          "contents": {
+             "Input Image": "input_0.png",
+             "Scribbles": "input_1.png",
+             "Output Matting": "output.png"
+          },
+          "label": "The images can be downloaded here:",
+          "type": "file_download"
+       }
+    ],
+    "run": "python $bin/main.py $input_0 --scribbles $input_1 --radius $radius --epsilon $epsilon"
+ }
